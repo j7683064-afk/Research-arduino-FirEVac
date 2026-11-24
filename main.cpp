@@ -114,10 +114,56 @@ void trackEvacRoute() {
     turnRight();
   }
 }
+// turn obstacleDetection on
+void obstacleDetection() {
+
+  float leftDistance = measureDistance(LeftTrigUS, LeftEchoUS);
+  float midDistance = measureDistance(MidTrigUS, MidEchoUS);
+  float rightDistance = measureDistance(RightTrigUS, RightEchoUS);
+
+  Serial.print("Left: ");
+  Serial.println(leftDistance);
+
+  Serial.print("Middle: ");
+  Serial.println(midDistance);
+
+  Serial.print("Right: ");
+  Serial.println(rightDistance);
+
+}
+// Turn relay ON
+void relayON() {
+  digitalWrite(RelayIN, HIGH);
+}
+
+// Turn relay OFF
+void relayOFF() {
+  digitalWrite(RelayIN, LOW);
+}
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // Read ultrasonic sensors
+  float leftDistance = measureDistance(LeftTrigUS, LeftEchoUS);
+  float midDistance = measureDistance(MidTrigUS, MidEchoUS);
+  float rightDistance = measureDistance(RightTrigUS, RightEchoUS);
 
+  // Check obstacle in front
+  if (midDistance > 0 && midDistance < 20) {
+
+    stopRobot();
+
+    Serial.println("Obstacle detected!");
+
+  }
+
+  // No obstacle detected
+  else {
+
+    trackEvacRoute();
+
+  }
+
+  delay(50);
 }
 
 //test
